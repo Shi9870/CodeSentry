@@ -94,6 +94,21 @@ pip install -r requirements.txt
 
 ---
 
+## Testing with Dummy Data (Stress Test)
+
+Want to see the tool's capabilities without using real secrets? We include a robust test data generator.
+
+1.  **Generate Fake Leaks**:
+    Run the following script to create a `stress_test_data` folder containing thousands of files with fake credentials and varying risk levels.
+    ```bash
+    python generate_test_data.py
+    ```
+
+2.  **Run Scan**:
+    Open Secret Hunter, select the `stress_test_data` folder, and start scanning. You will see how the ML model categorizes different types of fake keys (Critical vs Low risk).
+
+---
+
 ## Model Training and Customization
 
 This project includes a complete pipeline for retraining the detection model.
@@ -116,17 +131,24 @@ If you wish to adjust feature extraction logic (e.g., entropy calculation or pre
 
 ## Project Structure
 
-    Secret-Hunter/
-    ├── main.py                 # Application entry point (GUI)
-    ├── main_function/
-    │   ├── detector.py         # Loads model and performs scanning
-    │   └── utils.py            # Feature extraction and math utilities
-    ├── ml/
-    │   ├── model.py            # Model training script
-    │   ├── data_generator.py   # Synthetic dataset generator
-    │   └── xgb_model.json      # Trained XGBoost model
-    └── README.md               # Project documentation
 
+    ```text
+    Secret-Hunter/
+    ├── main.py                     # Application entry point (PyQt6 GUI)
+    ├── checkingFile/
+    │   ├── generate_test_data.py   # Script for generating dummy test files
+    ├── main_function/
+    │   ├── detector.py             # ML Inference logic
+    │   └── utils.py                # Feature extraction
+    ├── resources/
+    │   ├── languages.py            # Localization (English/Chinese)
+    │   └── styles.py               # QSS Stylesheets
+    ├── ml/
+    │   ├── model.py                # Training script
+    │   └── data_generator.py       # generate training data
+    │   └── xgb_model.json          # Trained Model
+    └── requirements.txt            # Dependencies
+  ```
 ---
 
 ## Future Roadmap
