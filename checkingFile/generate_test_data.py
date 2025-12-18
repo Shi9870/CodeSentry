@@ -168,7 +168,7 @@ def main():
     for k, v in stats.items():
         print(f"  [{k}]: {v} files")
     print("-" * 30)
-    print(f"[NEXT] Select '{os.path.abspath(TARGET_DIR)}' in Secret Hunter to test!")
+    print(f"[NEXT] Select '{os.path.abspath(TARGET_DIR)}' in CodeSentry to test!")
 
 if __name__ == "__main__":
     main()

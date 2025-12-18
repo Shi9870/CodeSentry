@@ -1,12 +1,12 @@
-# Secret Hunter
+# CodeSentry
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![XGBoost](https://img.shields.io/badge/ML-XGBoost-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Secret Hunter** is a machine learning–based desktop application built with **CustomTkinter** and **XGBoost** for detecting potential leaks of API keys, tokens, and other sensitive credentials in source code.
+**CodeSentry** is a machine learning–based desktop application built with **CustomTkinter** and **XGBoost** for detecting potential leaks of API keys, tokens, and other sensitive credentials in source code.
 
-Unlike traditional tools that rely solely on regular expressions, Secret Hunter combines **statistical feature analysis** (e.g., Shannon entropy) with **ML-based classification** to identify high-risk random-looking secrets (such as AWS or OpenAI-style keys), while significantly reducing false positives caused by ordinary variables or noise.
+Unlike traditional tools that rely solely on regular expressions, CodeSentry combines **statistical feature analysis** (e.g., Shannon entropy) with **ML-based classification** to identify high-risk random-looking secrets (such as AWS or OpenAI-style keys), while significantly reducing false positives caused by ordinary variables or noise.
 
 ---
 
@@ -105,7 +105,7 @@ Want to see the tool's capabilities without using real secrets? We include a rob
     ```
 
 2.  **Run Scan**:
-    Open Secret Hunter, select the `stress_test_data` folder, and start scanning. You will see how the ML model categorizes different types of fake keys (Critical vs Low risk).
+    Open CodeSentry, select the `stress_test_data` folder, and start scanning. You will see how the ML model categorizes different types of fake keys (Critical vs Low risk).
 
 ---
 

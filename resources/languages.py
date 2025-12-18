@@ -11,7 +11,7 @@ class LanguageManager:
     
     TEXTS = {
         "zh_TW": {
-            "app_title": "Secret Hunter - 敏感資訊掃描工具",
+            "app_title": "CodeSentry - 敏感資訊掃描工具",
             "select_folder": "選擇資料夾",
             "start_scan": "開始掃描",
             "stop_scan": "停止掃描",
@@ -43,7 +43,7 @@ class LanguageManager:
             "lang_zh": "繁體中文"
         },
         "en_US": {
-            "app_title": "Secret Hunter - Sensitive Data Scanner",
+            "app_title": "CodeSentry - Sensitive Data Scanner",
             "select_folder": "Select Folder",
             "start_scan": "Start Scan",
             "stop_scan": "Stop Scan",

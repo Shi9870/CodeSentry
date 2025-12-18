@@ -1,9 +1,9 @@
 ﻿Risk,File,Path,Line,Confidence,Time,Match Content (Masked)
-LOW,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,8,23.80%,15:52:32,sk-p********cdef
-MEDIUM,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,12,36.40%,15:52:32,ghp_********5678
-HIGH,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,16,45.10%,15:52:32,AKIA********0000
-LOW,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,25,25.50%,15:52:32,sk-p********7s9d
-MEDIUM,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,29,43.10%,15:52:32,ghp_********9d8f
-HIGH,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,33,54.70%,15:52:32,AKIA********M1N3
-LOW,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,42,24.30%,15:52:32,xoxb********4k5l
-MEDIUM,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/Secret Hunter/checkingFile\test_leak.py,46,37.30%,15:52:32,AIza********gurf
+LOW,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,8,23.80%,15:52:32,sk-p********cdef
+MEDIUM,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,12,36.40%,15:52:32,ghp_********5678
+HIGH,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,16,45.10%,15:52:32,AKIA********0000
+LOW,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,25,25.50%,15:52:32,sk-p********7s9d
+MEDIUM,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,29,43.10%,15:52:32,ghp_********9d8f
+HIGH,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,33,54.70%,15:52:32,AKIA********M1N3
+LOW,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,42,24.30%,15:52:32,xoxb********4k5l
+MEDIUM,test_leak.py,C:/Users/ryder/OneDrive/桌面/forfun/CodeSentry/checkingFile\test_leak.py,46,37.30%,15:52:32,AIza********gurf

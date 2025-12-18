@@ -193,7 +193,7 @@ class SecretHunterWindow(QMainWindow):
         sidebar_layout.setContentsMargins(20, 30, 20, 20)
         sidebar_layout.setSpacing(15)
 
-        self.lbl_title = QLabel("Secret Hunter")
+        self.lbl_title = QLabel("CodeSentry")
         self.lbl_title.setObjectName("AppTitle")
         sidebar_layout.addWidget(self.lbl_title)
 
@@ -308,7 +308,7 @@ class SecretHunterWindow(QMainWindow):
 
     def retranslate_ui(self):
         self.setWindowTitle(LanguageManager.get("app_title"))
-        self.lbl_title.setText("Secret Hunter")
+        self.lbl_title.setText("CodeSentry")
         self.btn_select.setText(LanguageManager.get("select_folder"))
         self.btn_export.setText(LanguageManager.get("export_report"))
         self.lbl_path.setText(self.target_path if hasattr(self, 'target_path') else LanguageManager.get("no_folder"))
