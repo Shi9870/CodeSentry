@@ -14,7 +14,7 @@ from PyQt6.QtCore import (
     Qt, QThread, pyqtSignal, QAbstractTableModel, QModelIndex, 
     QSortFilterProxyModel, QSize
 )
-from PyQt6.QtGui import QColor, QFont, QAction
+from PyQt6.QtGui import QColor, QFont, QAction,QIcon
 
 # === Import refactored resource modules ===
 from resources.languages import LanguageManager
@@ -475,10 +475,15 @@ class SecretHunterWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    
+    app.setWindowIcon(QIcon(os.path.join("resources/img", "icon.png")))
     default_font = QFont("Segoe UI", 10)
     app.setFont(default_font)
-    
+    try:
+        from ctypes import windll
+        myappid = 'mycompany.codesentry.version.1.0' # 隨便取一個唯一的字串
+        windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+    except ImportError:
+        pass
     window = SecretHunterWindow()
     window.show()
     sys.exit(app.exec())
