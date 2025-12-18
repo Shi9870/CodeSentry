@@ -20,7 +20,6 @@ from PyQt6.QtGui import QColor, QFont, QAction
 from resources.languages import LanguageManager
 from resources.styles import DARK_THEME_QSS
 
-# Try to import the detector; use a Mock class if missing to prevent crashes during UI testing
 try:
     from main_function.detector import MLDetector
 except ImportError:
@@ -32,10 +31,6 @@ except ImportError:
 # Data Model (ResultModel)
 # ==========================================
 class ResultModel(QAbstractTableModel):
-    """
-    Custom data model for QTableView.
-    Handles data storage, display formatting, and alignment.
-    """
     def __init__(self, data=None):
         super().__init__()
         self._data = data or []
@@ -48,17 +43,15 @@ class ResultModel(QAbstractTableModel):
         row_data = self._data[index.row()]
         col = index.column()
 
-        # [Display Logic] - What text to show
         if role == Qt.ItemDataRole.DisplayRole:
             key = self._headers[col]
             if col == 0: return row_data['risk']
             if col == 1: return row_data['file']
             if col == 2: return str(row_data['line'])
             if col == 3: return self.mask_secret(row_data['match']) # Apply masking
-            if col == 4: return f"{row_data['score']:.2f}%"        # Format to 2 decimal places
+            if col == 4: return f"{row_data['score']:.2f}%"
             if col == 5: return row_data['timestamp']
 
-        # [Color Logic] - Text color based on risk level
         if role == Qt.ItemDataRole.ForegroundRole:
             risk = row_data['risk']
             if risk == 'CRITICAL': return QColor("#ff4444")
@@ -67,9 +60,8 @@ class ResultModel(QAbstractTableModel):
             if risk == 'LOW': return QColor("#2ecc71")
             return QColor("white")
 
-        # [Alignment Logic] - Center or Left align
         if role == Qt.ItemDataRole.TextAlignmentRole:
-            if col in [0, 2, 4, 5]: # Risk, Line, Score, Time -> Center
+            if col in [0, 2, 4, 5]:
                 return Qt.AlignmentFlag.AlignCenter
             return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
 
@@ -87,34 +79,36 @@ class ResultModel(QAbstractTableModel):
         return None
 
     def add_row(self, row_data):
-        """Adds a new row of data and notifies the View."""
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self._data.append(row_data)
         self.endInsertRows()
 
     def clear(self):
-        """Clears all data from the model."""
         self.beginResetModel()
         self._data = []
         self.endResetModel()
 
-    def mask_secret(self, text):
-        """Masks sensitive parts of the string for display."""
+    @staticmethod
+    def mask_secret(text):
+        """
+        Masks sensitive parts of the string.
+        Static method so it can be used by the Export function as well.
+        """
+        if not text: return ""
         if len(text) <= 8:
             return text[:2] + "****"
         return text[:4] + "********" + text[-4:]
     
     def get_all_data(self):
-        """Returns raw data list for export functionality."""
         return self._data
 
 # ==========================================
 # Background Scanning Thread
 # ==========================================
 class ScanThread(QThread):
-    progress_update = pyqtSignal(str, float)  # (Current Filename, Progress %)
-    result_found = pyqtSignal(dict)           # (Result Data Dictionary)
-    scan_finished = pyqtSignal()              # (Finished Signal)
+    progress_update = pyqtSignal(str, float)
+    result_found = pyqtSignal(dict)
+    scan_finished = pyqtSignal()
 
     def __init__(self, target_path, detector):
         super().__init__()
@@ -124,11 +118,8 @@ class ScanThread(QThread):
 
     def run(self):
         file_list = []
-        # 1. Recursively collect files
         for root, dirs, files in os.walk(self.target_path):
             if not self.is_running: break
-            
-            # Filter out common non-source directories
             dirs[:] = [d for d in dirs if d not in ['.git', 'venv', '__pycache__', 'node_modules', '.idea', '.vscode']]
             
             for f in files:
@@ -140,7 +131,6 @@ class ScanThread(QThread):
             self.scan_finished.emit()
             return
 
-        # 2. Process each file
         for i, filepath in enumerate(file_list):
             if not self.is_running: break
 
@@ -150,8 +140,6 @@ class ScanThread(QThread):
 
             try:
                 if os.path.getsize(filepath) == 0: continue
-                
-                # Read file content (ignore errors for binary/encoding issues)
                 with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                     for line_idx, line in enumerate(f, 1):
                         results = self.detector.scan_line(line.strip(), line_idx)
@@ -167,7 +155,6 @@ class ScanThread(QThread):
                             }
                             self.result_found.emit(data)
             except Exception:
-                # Silently ignore permission errors or read failures to keep scanning
                 pass
 
         self.scan_finished.emit()
@@ -186,7 +173,7 @@ class SecretHunterWindow(QMainWindow):
         self.scanning = False
         
         self.init_ui()
-        self.apply_styles() # Apply external CSS
+        self.apply_styles()
         self.retranslate_ui()
 
     def init_ui(self):
@@ -210,7 +197,6 @@ class SecretHunterWindow(QMainWindow):
         self.lbl_title.setObjectName("AppTitle")
         sidebar_layout.addWidget(self.lbl_title)
 
-        # Language Selection Combo Box
         self.combo_lang = QComboBox()
         self.combo_lang.addItem("English", "en_US")
         self.combo_lang.addItem("繁體中文", "zh_TW")
@@ -270,7 +256,6 @@ class SecretHunterWindow(QMainWindow):
         self.proxy_models = {}
         self.stat_labels = {}
 
-        # Define Tab Configurations
         tab_configs = [
             ("tab_all", None),
             ("tab_critical", "CRITICAL"),
@@ -279,7 +264,6 @@ class SecretHunterWindow(QMainWindow):
             ("tab_low", "LOW")
         ]
 
-        # Initialize tabs with QTableView and QSortFilterProxyModel
         for key, filter_str in tab_configs:
             tab = QWidget()
             vbox = QVBoxLayout(tab)
@@ -301,18 +285,16 @@ class SecretHunterWindow(QMainWindow):
 
             proxy = QSortFilterProxyModel(self)
             proxy.setSourceModel(self.source_model)
-            proxy.setFilterKeyColumn(0) # Filter based on column 0 (Risk Level)
+            proxy.setFilterKeyColumn(0)
             if filter_str:
                 proxy.setFilterFixedString(filter_str)
             
             table.setModel(proxy)
-            
-            # Set initial column widths
-            table.setColumnWidth(0, 90)  # Risk
-            table.setColumnWidth(1, 200) # File
-            table.setColumnWidth(2, 60)  # Line
-            table.setColumnWidth(3, 300) # Match
-            table.setColumnWidth(4, 90)  # Score
+            table.setColumnWidth(0, 90)
+            table.setColumnWidth(1, 200)
+            table.setColumnWidth(2, 60)
+            table.setColumnWidth(3, 300)
+            table.setColumnWidth(4, 90)
             
             self.proxy_models[key] = proxy
             vbox.addWidget(table)
@@ -322,11 +304,9 @@ class SecretHunterWindow(QMainWindow):
         main_layout.addWidget(content_area)
 
     def apply_styles(self):
-        """Apply global CSS styles from the external file."""
         self.setStyleSheet(DARK_THEME_QSS)
 
     def retranslate_ui(self):
-        """Update all UI text elements based on the current language."""
         self.setWindowTitle(LanguageManager.get("app_title"))
         self.lbl_title.setText("Secret Hunter")
         self.btn_select.setText(LanguageManager.get("select_folder"))
@@ -350,13 +330,11 @@ class SecretHunterWindow(QMainWindow):
         self.update_stats()
 
     def change_language(self, index):
-        """Handle language change event."""
         data = self.combo_lang.itemData(index)
         LanguageManager.current_lang = data
         self.retranslate_ui()
 
     def select_folder(self):
-        """Open dialog to select a target directory."""
         folder = QFileDialog.getExistingDirectory(self, LanguageManager.get("select_folder"))
         if folder:
             self.target_path = folder
@@ -364,16 +342,18 @@ class SecretHunterWindow(QMainWindow):
             self.lbl_status.setText(LanguageManager.get("ready"))
 
     def toggle_scan(self):
-        """Handle the Start/Stop scan logic."""
         if self.scanning:
-            # Logic: STOP
+            # STOP
             if self.scan_thread:
                 self.scan_thread.stop()
                 self.btn_action.setEnabled(False)
                 self.lbl_status.setText(LanguageManager.get("scanning"))
         else:
-            # Logic: START
-            if not hasattr(self, 'target_path'): return
+            # START
+            # === FIXED: Check if folder is selected ===
+            if not hasattr(self, 'target_path') or not self.target_path:
+                QMessageBox.warning(self, LanguageManager.get("app_title"), LanguageManager.get("no_folder"))
+                return
             
             self.scanning = True
             self.source_model.clear()
@@ -403,7 +383,6 @@ class SecretHunterWindow(QMainWindow):
         self.update_stats()
 
     def update_stats(self):
-        """Update statistic labels in each tab."""
         keys = ["tab_all", "tab_critical", "tab_high", "tab_medium", "tab_low"]
         for key in keys:
             count = self.proxy_models[key].rowCount()
@@ -411,7 +390,6 @@ class SecretHunterWindow(QMainWindow):
             self.stat_labels[key].setText(text_fmt.format(count))
 
     def on_finished(self):
-        """Handle scan completion or cancellation."""
         self.scanning = False
         self.btn_action.setEnabled(True)
         self.btn_select.setEnabled(True)
@@ -449,16 +427,27 @@ class SecretHunterWindow(QMainWindow):
             return
 
         try:
+            # === FIXED: Apply masking to exported data ===
+            # Create a copy or process on the fly to avoid modifying source data if not intended,
+            # though masking is usually irreversible for safety.
+            
             if file_path.endswith('.json'):
+                # For JSON, we construct a new list with masked values
+                masked_data = []
+                for row in data:
+                    masked_row = row.copy()
+                    masked_row['match'] = ResultModel.mask_secret(row['match'])
+                    masked_data.append(masked_row)
+                
                 with open(file_path, 'w', encoding='utf-8') as f:
-                    json.dump(data, f, ensure_ascii=False, indent=4)
+                    json.dump(masked_data, f, ensure_ascii=False, indent=4)
             else:
                 if not file_path.endswith('.csv'):
                     file_path += '.csv'
                 
                 with open(file_path, 'w', newline='', encoding='utf-8-sig') as f:
                     writer = csv.writer(f)
-                    headers = ["Risk", "File", "Path", "Line", "Confidence", "Time", "Match Content"]
+                    headers = ["Risk", "File", "Path", "Line", "Confidence", "Time", "Match Content (Masked)"]
                     writer.writerow(headers)
                     for row in data:
                         writer.writerow([
@@ -468,7 +457,7 @@ class SecretHunterWindow(QMainWindow):
                             row['line'],
                             f"{row['score']:.2f}%",
                             row['timestamp'],
-                            row['match']
+                            ResultModel.mask_secret(row['match']) # Apply Mask
                         ])
 
             QMessageBox.information(
@@ -487,7 +476,6 @@ class SecretHunterWindow(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     
-    # Global Font Setting (Prevents QFont Warning regarding point size)
     default_font = QFont("Segoe UI", 10)
     app.setFont(default_font)
     

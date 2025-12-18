@@ -3,6 +3,8 @@
 # Define the QSS styles for the Dark Theme
 # Note: Global font size settings are handled in main.py to avoid QFont warnings.
 
+# resources/styles.py
+
 DARK_THEME_QSS = """
     /* Main Window Background */
     QMainWindow { background-color: #1e1e1e; }
@@ -27,6 +29,27 @@ DARK_THEME_QSS = """
     #PathLabel { 
         color: #888; 
         font-size: 12px; 
+    }
+    
+    /* --- FIXED: QMessageBox Styling (修正彈窗看不見的問題) --- */
+    QMessageBox {
+        background-color: #2b2b2b;
+        border: 1px solid #444;
+    }
+    QMessageBox QLabel {
+        color: white; /* 確保文字是白色的 */
+        background-color: transparent;
+    }
+    QMessageBox QPushButton {
+        background-color: #3a3a3a;
+        border: 1px solid #555;
+        border-radius: 4px;
+        padding: 6px 15px;
+        color: white;
+        min-width: 60px;
+    }
+    QMessageBox QPushButton:hover {
+        background-color: #4a4a4a;
     }
     
     /* ComboBox (Language Selector) Styling */
@@ -74,7 +97,6 @@ DARK_THEME_QSS = """
     #ActionButton:hover { 
         background-color: #27ae60; 
     }
-    /* Red color when scanning is active */
     #ActionButton[state="stop"] { 
         background-color: #e74c3c; 
     }
