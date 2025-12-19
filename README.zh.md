@@ -109,6 +109,8 @@ macOS / Linux：
 ### 2. 訓練模型
 `python model.py`
 如需調整特徵提取邏輯（例如熵值計算或前綴規則），請修改 `main_function/utils.py` 後重新訓練。模型將輸出為 `ML/xgb_model.json`。
+#### 訓練結果
+![Training Outcome](ML/training_Outcome.png)
 
 ---
 ## 專案結構
