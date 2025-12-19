@@ -33,9 +33,9 @@ def resource_path(relative_path):
     return os.path.join(os.path.abspath("."), relative_path)
 
 
-# ==========================================
+ 
 # Data Model (ResultModel)
-# ==========================================
+ 
 class ResultModel(QAbstractTableModel):
     def __init__(self, data=None):
         super().__init__()
@@ -108,9 +108,9 @@ class ResultModel(QAbstractTableModel):
     def get_all_data(self):
         return self._data
 
-# ==========================================
+ 
 # Background Scanning Thread
-# ==========================================
+ 
 class ScanThread(QThread):
     progress_update = pyqtSignal(str, float)
     result_found = pyqtSignal(dict)
@@ -168,9 +168,7 @@ class ScanThread(QThread):
     def stop(self):
         self.is_running = False
 
-# ==========================================
 # Main Application Window
-# ==========================================
 class SecretHunterWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -413,9 +411,7 @@ class SecretHunterWindow(QMainWindow):
         if self.scan_thread and self.scan_thread.is_running:
              self.progress_bar.setValue(100)
 
-    # ==========================
     # Export Feature
-    # ==========================
     def export_report(self):
         data = self.source_model.get_all_data()
         if not data:

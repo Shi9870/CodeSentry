@@ -5,9 +5,9 @@ import json
 import time
 import uuid
 
-# ==========================================
+ 
 # Configuration
-# ==========================================
+ 
 TARGET_DIR = "stress_test_data"
 TOTAL_FILES = 2000          # Total number of files
 LEAK_PROBABILITY = 0.15     # Increased to 15% to ensure we see enough variety
@@ -23,9 +23,9 @@ RISK_DISTRIBUTION = {
     "LOW": 0.4        # 40% (Most common noise)
 }
 
-# ==========================================
+ 
 # Fake Data Patterns
-# ==========================================
+ 
 
 # 1. CRITICAL (Specific Patterns + High Entropy)
 PATTERNS_CRITICAL = {
@@ -58,9 +58,9 @@ PATTERNS_LOW = {
 
 EXTENSIONS = ['.py', '.js', '.json', '.env', '.txt', '.yml']
 
-# ==========================================
+ 
 # Generators
-# ==========================================
+ 
 
 def get_random_string(length=10):
     return ''.join(random.choices(string.ascii_letters, k=length))
